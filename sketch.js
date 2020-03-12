@@ -6,56 +6,8 @@ function setup() {
 
 function draw() {
 	followCursor.init();
-  document.body.onmousemove = followCursor.run;
-	// Call the variableEllipse() method and send it the
-	// parameters for the current mouse position
-	// and the previous mouse position
-	// background(102)
-	// variableEllipse(mouseX, mouseY, pmouseX, pmouseY);
-	// ship sh = new ship(100,100,0);
+  followCursor.run();
 }
-
-// The simple method variableEllipse() was created specifically
-// for this program. It calculates the speed of the mouse
-// and draws a small ellipse if the mouse is moving slowly
-// and draws a large ellipse if the mouse is moving quickly
-//
-// function variableEllipse(x, y, px, py) {
-// 	let speed = abs(x - px) + abs(y - py);
-// 	stroke(speed);
-// 	ellipse(x, y, speed, speed);
-// }
-// class ship {
-// 	constructor(x,y) {
-// 		triangle(x,y_3,x+1.5,y-2,x-1.5,y-2);
-//
-// 	}
-// 	turnR(){
-// 		ship.rotation(-5)
-// 	}
-// 	turnL(){
-// 		ship.rotation(-5)
-// 	}
-// }
-//
-// function keyDown(key){
-// 	if (key = right_key){
-// 		sh.turnR();
-// 	}
-// 	if(key = left_key){
-// 		sh.turnL();
-// 	}
-// }
-function mouseClicked(){
-followCursor.s.style.transform = 'rotate(30deg)';
-}
-
-function getMouseCoords(e) {
-  var e = e || window.event;
-  document.getElementById('ship').innerHTML = e.clientX + ', ' +
-           e.clientY;
-}
-
 
 var followCursor = (function() {
   var s = window.document.createElement('div');
@@ -67,8 +19,22 @@ var followCursor = (function() {
 	s.style.borderLeft = '5px solid transparent';
 	s.style.borderRight = '5px solid transparent';
 	s.style.borderBottom = '15px solid white';
-	// s.style.transform = 'rotate(50deg)';
-	// alert(document.getElementById('div'));
+	var rotation = 0;
+	 window.addEventListener('keydown', function (e) {
+		switch (e.key) {
+			case 'ArrowUp':
+			s.style.top = (s.getBoundingClientRect().top - 2)+ 'px';
+			break;
+			case 'ArrowDown':
+			s.style.top = (s.getBoundingClientRect().top + 2)+ 'px';
+			break;
+			case 'ArrowLeft':
+			rotation-=3;
+			break;
+			case 'ArrowRight':
+			rotation+=3;
+		}
+	});
 
 
   return {
@@ -76,17 +42,19 @@ var followCursor = (function() {
       document.body.appendChild(s);
     },
 
-    run: function(e) {
+    run: function() {
       var e = e || window.event;
-      // s.style.left  = (e.clientX - 10) + 'px';
-      // s.style.top = (e.clientY - 10) + 'px';
-			s.style.transform = 'rotate('+e.clientX+'deg)';
-      getMouseCoords(e);
+  // s.style.left  = (e.clientX - 10) + 'px';
+  // s.style.top = (e.clientY - 10) + 'px';
+	// s.style.top = s.getBoundingClientRect().top + 'px';
+	// s.style.left = s.getBoundingClientRect().left + 'px';
+	s.style.transform = 'rotate('+rotation+'deg)';
+	document.getElementById('ship').innerHTML = rotation+' deg';
     }
   };
 }());
 
 // window.onload = function() {
 //   followCursor.init();
-//   document.body.onmousemove = followCursor.run;
+//   followCursor.run();
 // }
